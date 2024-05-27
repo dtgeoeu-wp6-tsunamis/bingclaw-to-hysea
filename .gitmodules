@@ -1,0 +1,3 @@
+[submodule "Interface-module"]
+	path = Interface-module
+	url = https://github.com/dtgeoeu-wp6-tsunamis/Interface-module.git
