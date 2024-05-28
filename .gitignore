@@ -1,4 +1,3 @@
-IO_bingclaw/scenarios_output/mscen*
-IO_interface_module/mscen*
+outputs/mscen*
 py/__pycache__
 *.sif

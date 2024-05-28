@@ -2,29 +2,12 @@
 Script to launch a bingclaw simulation 
 
 Input needed:
- - io_path          Name of parent directory for BingClaw Input-Output files and folders
- - bathymetry       Bathymetry file used in BingClaw simulations
- - scenario         Simulations name (same name as the .tt3 files describing initial conditions)
- - scen_input_dir   Name of directory where simualtion input files (.tt3) describing initial conditions are stored
- - scen_output_dir  Name of directory where simulation directory output will be created
- - image_type       Type of image: 'docker' or 'singularity'
- - image_name       Name of BingClaw docker image or singularity .sif file
-
-An example of how the Input/Output directory for BingClaw files and folders is:
- io_path
- | - scen_input_dir
- |   | - scenario1.tt3
- |   | - scenario2.tt3
- |   | - ...
- | - scen_output_dir
- |   | - scenario1 (will be created at run time)
- |   |   | - bingclaw output files
- |   | - scenario2 (will be created at run time)
- |   |   | - bingclaw output files
- |   | - ...
- |   |   | - bingclaw output files
- | - bathymetry
- | - setrun_template.py
+ - bingclaw_input_dir       Name of directory with BingClaw input files
+ - bingclaw_output_dir      Name of parent directory where BingClaw output folder will be saved
+ - bathymetry               Bathymetry file used in BingClaw simulations
+ - scenario                 Simulation name (same name as the .tt3 files describing initial conditions)
+ - image_type               Type of image: 'docker' or 'singularity'
+ - image_name               Name of BingClaw docker image or singularity .sif file
 
 Created by V. Magni (NGI)
 """
@@ -33,31 +16,28 @@ import sys
 import shutil
 from pyutil import filereplace
 
-def run_bingclaw(io_path, scen_input_dir, scen_output_dir, bathymetry, scenario, image_type, image_name):
-    print(f"Preparing files to run BingClaw simulation {scenario}")
+def run_bingclaw(input_dir, output_dir, bathymetry, scenario, image_type, image_name):
+    print(f"** Executing run_bingclaw")
     
-    # Create output folder for scenario
-    scenario_dir = os.path.join(io_path, scen_output_dir, scenario)
-    if not os.path.exists(scenario_dir):
-        os.makedirs(scenario_dir)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     else:
-        print(f"WARNING: {scenario_dir} already exists, results will be overwritten")
+        print(f"Directory {output_dir} for scenario {scenario} already exists, results will be overwritten")
 
-    
     # Copy setrun.py in output scenario folder and change names of files required to run the simualtion
-    setrun_template_file = os.path.join(io_path, 'setrun_template.py')
-    setrun_file = os.path.join(scenario_dir, 'setrun.py')
+    setrun_template_file = os.path.join(input_dir, 'setrun_template.py')
+    setrun_file = os.path.join(output_dir, 'setrun.py')
     cp = shutil.copy(setrun_template_file, setrun_file)
     filereplace(setrun_file, 'BATHYMETRY', bathymetry)
-    filereplace(setrun_file, 'SCENARIO', scenario + '.tt3')
+    filereplace(setrun_file, 'SCENARIO', scenario)
 
     # Copy required files in output scenario folder
-    input_file = os.path.join(io_path, scen_input_dir, (scenario + '.tt3'))
-    cp = shutil.copy(input_file, os.path.join(scenario_dir, (scenario + '.tt3')))
-    cp = shutil.copy(os.path.join(io_path, bathymetry),os.path.join(scenario_dir, bathymetry))
+    input_file = os.path.join(input_dir, scenario)
+    cp = shutil.copy(input_file, os.path.join(output_dir, scenario))
+    cp = shutil.copy(os.path.join(input_dir, bathymetry), os.path.join(output_dir, bathymetry))
     
     # Run bingclaw simulation
-    tomount = os.path.join(os.getcwd(),scenario_dir)
+    tomount = os.path.join(os.getcwd(),output_dir)
     if image_type == 'docker':
         command = f"docker run --rm -it -v {tomount}:/BingClaw/run {dockerimage_name}"
         os.system(command)
