@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "bingclaw_to_hysea"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 argparse = "^1.4.0"
 datetime = "^5.4"
 numpy = "^1.26.4"
