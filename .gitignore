@@ -1,3 +1,4 @@
 outputs/mscen*
 py/__pycache__
 *.sif
+simulations.txt

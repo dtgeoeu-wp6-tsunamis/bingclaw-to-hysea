@@ -3,7 +3,7 @@ Script to launch a bingclaw simulation
 
 Input needed:
  - bingclaw_input_dir       Name of directory with BingClaw input files
- - bingclaw_output_dir      Name of parent directory where BingClaw output folder will be saved
+ - bingclaw_output_dir      Name of directory where BingClaw outputs will be saved
  - bathymetry               Bathymetry file used in BingClaw simulations
  - scenario                 Simulation name (same name as the .tt3 files describing initial conditions)
  - image_type               Type of image: 'docker' or 'singularity'
@@ -17,14 +17,16 @@ import shutil
 from pyutil import filereplace
 
 def run_bingclaw(input_dir, output_dir, bathymetry, scenario, image_type, image_name):
-    print(f"** Executing run_bingclaw")
+    print(f"* Executing run_bingclaw")
     
+    # Create BingClaw output directory inside the scenario output directory
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     else:
         print(f"Directory {output_dir} for scenario {scenario} already exists, results will be overwritten")
 
-    # Copy setrun.py in output scenario folder and change names of files required to run the simualtion
+    # Copy template input (setrun.py) in the scenario/bingclaw output directory 
+    # and insert paths/names of files required to run the simualtion
     setrun_template_file = os.path.join(input_dir, 'setrun_template.py')
     setrun_file = os.path.join(output_dir, 'setrun.py')
     cp = shutil.copy(setrun_template_file, setrun_file)

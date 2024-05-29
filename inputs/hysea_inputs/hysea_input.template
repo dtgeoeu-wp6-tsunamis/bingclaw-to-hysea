@@ -4,7 +4,7 @@ BATHYMETRY    # Bathymetry file name
 0                                    # Apply Kajiura filter to the deformation (0: no, 1: yes)
 1                                    # Number of faults
 DEFORMATION_FILE        # File with dynamic deformation
-SCENARIO_NAME              # NetCDF file prefix
+HYSEA_OUTNAME              # NetCDF file prefix
 1 1 0 0 0 0 0 0 0 0  # Variables saved
 1                    # Number of levels (1 no nested meshes)
 1                    # Upper border condition (1: open, -1: wall)

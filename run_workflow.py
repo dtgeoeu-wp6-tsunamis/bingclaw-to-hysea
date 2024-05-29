@@ -5,41 +5,7 @@ Script to launch the workflow following the steps:
     - run interface module (takes output from BingClaw simulation and creates inputs for HySEA)
     - run T-HySEA simulation
 
-The structure of this repo and of the Input/Output directories is:
- bingclaw-to-hysea
- | - inputs
- |   | - bingclaw_inputs
- |   |   | - bathymetry
- |   |   | - setrun_template.py
- |   |   | - scenario1.tt3
- |   |   | - scenario2.tt3
- |   |   | - ...
- |   | - hysea_inputs
- |   |   | - bathymetry
- |   |   | - hysea_input.template
- | - outputs
- |   | - scenario1 (will be created at run time)
- |   |   | - bingclaw_out
- |   |   |   | - bingclaw output files
- |   |   | - intmod_out
- |   |   |   | - interface module output files
- |   |   | - hysea_out
- |   |   |   | - bingclaw output files
- |   | - scenario2 (will be created at run time)
- |   |   | - bingclaw_out
- |   |   |   | - bingclaw output files
- |   |   | - intmod_out
- |   |   |   | - interface module output files
- |   |   | - hysea_out
- |   |   |   | - bingclaw output files
- |   | - ...
- | - py
- |   | - run_bingclaw.py
- |   | - run_interface_module.py
- |   | - run_hysea.py
- | - run_workflow.py
- | - pyproject.toml
- | - run_simulation.sh (needed only for running BingClaw with Singularity)
+For the structure of the input/output directories see README file of the this repo.
 
 Created by V. Magni (NGI)
 """
@@ -77,22 +43,24 @@ do_run_interface_module = True                  # Run Interface Module (True/Fal
 donor = 'bingclaw'
 bathy_file = 'MessinaGEBCO_forHySEA_HR.nc'      # Bathymetry file for interface module (where results of BingClaw are interpolated on)
 resolution = 100                                # Resolution (m)
-filter_type = 'kajiura'                         # Filter for deformation data (kajiura / none)
-casename = os.path.join(intmod_output_dir, scenario)   # String used to name output files from Interface Module (including directory where files are saved)
+filter_type = 'none'                         # Filter for deformation data (kajiura / none)
+filename_prefix = 'filter' + filter_type + '_res' + str(resolution) # Prefix used by Interface Module to name output files
+casename = os.path.join(intmod_output_dir, filename_prefix)         # Add path of directory where output is saved to prefix string
 
 # For T-HySEA 
-do_run_hysea = False                 # Run T-HySEA (True/False)
+do_run_hysea = True                 # Run T-HySEA (True/False)
 hysea_input_dir = os.path.join(input_dir, 'hysea_inputs')     # Directory with HySEA useful files
-
+hysea_executable = '/home/vmg/T-HySEA_4.0.0_MC/build/TsunamiHySEA'  # Full path of location of T-HySEA executable
+casename_from_intmod = filename_prefix
 
 # ============  RUN WORKFLOW  ============ 
-print(f"\n* Running workflow bingclaw-to-hysea for scenario {scenario}")
+print(f"\n* Running workflow bingclaw-to-hysea for scenario '{scenario}' with filter '{filter_type}' and resolution {resolution} m")
 
 # Create parent scenario directory for storing outputs
 if not os.path.exists(scenario_dir):
     os.makedirs(scenario_dir)
 else:
-    print(f"WARNING: The output folder {scenario_dir} already exists, results will be overwritten")
+    print(f"WARNING: The output folder {scenario_dir} already exists")
 
 # Run BingClaw
 if (do_run_bingclaw):
@@ -108,10 +76,13 @@ else:
 
 # Run T-HySEA
 if (do_run_hysea):
-    run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, scenario)
+    run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, scenario, casename_from_intmod)
 else:
     print('Skip running T-HySEA simulation because do_run_hysea is set to False')
 
 
-print("Done")
+print(f"\n* Done running workflow bingclaw-to-hysea for scenario '{scenario}' with filter '{filter_type}' and resolution {resolution} m")
+print(f"* BingClaw outputs are stored in {bingclaw_output_dir}")
+print(f"* Interface Module outputs are stored in {intmod_output_dir} and have prefix '{filename_prefix}'")
+print(f"* T-HySEA outputs are stored in {hysea_output_dir} and have prefix '{filename_prefix}'")
 
