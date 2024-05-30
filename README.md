@@ -33,7 +33,7 @@ The workflow needs the following input files:
 
 ### *Prepare files* 
 4. Make sure you have all the input files needed. Change parameters in the bingclaw and hysea template files, if needed. Note that the workflow will take care of inserting the right file names, so you do not need to change that now. However, if there is any other parameter (e.g., simualtion time, friction values, ...) that you want to change, do so in the template.
-5. Open the file `run_workflow.py` and set names and parameters in the section INPUT PARAMETERS
+5. Open the file `run_workflow.py` and set names and parameters in the section INPUT PARAMETERS. Parameters marked with *** in the comment are the bare minimum for the user to check and change. An example of a the script is `run_workflow_example.py`
 
 ### *Run the workflow*
 6. Run the workflow with the following command

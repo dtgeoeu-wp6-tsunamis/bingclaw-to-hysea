@@ -21,7 +21,7 @@ from py.run_hysea import run_hysea
 # Set folder and file names
 # Parameters marked with *** in the comment are the bare minimum for the 
 # user to check and change 
-scenario   = 'scenario1'     # ***Simulation name
+scenario   = 'mscen_v0.141_x0_15.471_y0_38.004'   # ***Simulation name
 input_dir  = 'inputs'        # Parent directory with input files for BingClaw and T-HySEA
 output_dir = 'outputs'       # Parent directory where scenario output folder will be created
 
@@ -35,24 +35,24 @@ hysea_output_dir = os.path.join(scenario_dir, 'hysea_out')        # Directory wh
 #       For now I only change the name of the files from the template, but for sure other parameters need to be changed too
 do_run_bingclaw = True                  # Run BingClaw simulation (True/False)
 bingclaw_input_dir = os.path.join(input_dir, 'bingclaw_inputs')     # Directory with BingClaw input files
-bingclaw_bathymetry = 'bathymetry.tt3'  # ***Bathymetry file used in BingClaw simulations
-bingclaw_scenario = scenario + '.tt3'   # ***Name of .tt3 file describing initial conditions for BingClaw simulation
-image_type = 'docker/singularity'       # ***Type of image (docker/singularity)
-image_name = 'image_name'               # ***Name of BingClaw docker image     #'ngiacr.azurecr.io/bingclaw:latest'  
+bingclaw_bathymetry = 'localMessinaBathy.tt3'                       # ***Bathymetry file used in BingClaw simulations
+bingclaw_scenario = scenario + '.tt3'                               # ***Name of .tt3 file describing initial conditions for BingClaw simulation
+image_type = 'singularity'              # ***Type of image (docker/singularity)
+image_name = 'bingclaw_latest.sif'      # ***Name of BingClaw docker image     #'ngiacr.azurecr.io/bingclaw:latest'  
 
 # For Interface Module 
-do_run_interface_module = True          # Run Interface Module (True/False)
+do_run_interface_module = True                  # Run Interface Module (True/False)
 donor = 'bingclaw'
-bathy_file = 'bathymetry.nc'            # ***Bathymetry file for interface module (where results of BingClaw are interpolated on)
-resolution = XXX                        # ***Resolution (m)
-filter_type = 'kajiura/none'            # ***Filter for deformation data (kajiura / none)
+bathy_file = 'MessinaGEBCO_forHySEA_HR.nc'      # ***Bathymetry file for interface module (where results of BingClaw are interpolated on)
+resolution = 100                                # ***Resolution (m)
+filter_type = 'none'                            # ***Filter for deformation data (kajiura / none)
 filename_prefix = 'filter' + filter_type + '_res' + str(resolution) # Prefix used by Interface Module to name output files
 casename = os.path.join(intmod_output_dir, filename_prefix)         # Add path of directory where output is saved to prefix string
 
 # For T-HySEA 
-do_run_hysea = True                     # Run T-HySEA (True/False)
-hysea_input_dir = os.path.join(input_dir, 'hysea_inputs')   # Directory with HySEA useful files
-hysea_executable = '/FULL_PATH_TO/T-HySEA_executable'       # ***Full path of location of T-HySEA executable
+do_run_hysea = True                 # Run T-HySEA (True/False)
+hysea_input_dir = os.path.join(input_dir, 'hysea_inputs')     # Directory with HySEA useful files
+hysea_executable = '/home/vmg/T-HySEA_4.0.0_MC/build/TsunamiHySEA'  # ***Full path of location of T-HySEA executable
 casename_from_intmod = filename_prefix
 
 # ============  RUN WORKFLOW  ============ 
