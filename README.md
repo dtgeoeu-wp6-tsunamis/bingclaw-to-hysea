@@ -8,6 +8,7 @@ The workflow follows the steps:
  - set up parameters, paths, flags to run the different modules
  - run BingClaw simulation
  - run interface module 
+ - remove first time step of the interface module (ground deformation) output
  - run T-HySEA simulation
    
 The workflow needs the following input files:
@@ -17,7 +18,6 @@ The workflow needs the following input files:
  - For BingClaw (only for singularity): a .sh script with commands to run inside the container (run_simulations.sh)
  - For T-HySEA: a bathymetry file (e.g., inputs/hysea/MessinaGEBCO_forHySEA_HR.nc). The spatial domain of this bathymetry needs to be larger than that used in the BingClaw simulation.   
  - For T-HySEA: a parameter file (this file is created by the workflow using the template inputs/hysea_inputs/hysea_input.template) 
- - TODO: for T-HySEA: add file for time series and option in thw workflow to use time series (change other parameters in the input file for HySEA)
     
    
 ## Instructions   
@@ -32,7 +32,7 @@ The workflow needs the following input files:
 3. Check the rest of the requirements below. This workflow includes running codes that have a lot of requirements. It uses Docker or Singularity to run BingClaw, which makes it possible to run it on any PC or clsuter. However, Tsunami-HySEA uses CUDA-capable GPUs, which means that an image of HySEA would need to be specific for the cluster you are using. Therefore, at the moment, this workflow assumes T-HySEA is installed on the cluster you are using.   
 
 ### *Prepare files* 
-4. Make sure you have all the input files needed. Change parameters in the bingclaw and hysea template files, if needed. Note that the workflow will take care of inserting the right file names, so you do not need to change that now. However, if there is any other parameter (e.g., simualtion time, friction values, ...) that you want to change, do so in the template.
+4. Make sure you have all the input files needed. Change parameters in the bingclaw and hysea template files, if needed. Note that the workflow will take care of inserting the right file names, so you do not need to change that now. However, if there is any other parameter (e.g., simulation time, friction values, ...) that you want to change, do so in the template.
 5. Open the file `run_workflow.py` and set names and parameters in the section INPUT PARAMETERS. Parameters marked with *** in the comment are the bare minimum for the user to check and change. An example of a the script is `run_workflow_example.py`
 
 ### *Run the workflow*

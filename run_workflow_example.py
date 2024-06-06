@@ -3,6 +3,7 @@ Script to launch the workflow following the steps:
     - set up parameters, paths, flags to run the different modules
     - run BingClaw simulation
     - run interface module (takes output from BingClaw simulation and creates inputs for HySEA)
+    - remove first time step of the interface module (ground deformation) output
     - run T-HySEA simulation
 
 For the structure of the input/output directories see README file of the this repo.
