@@ -35,7 +35,7 @@ vel_tol = 0.001        # velocity tolerance for stopping
 t_vel_tol = 60.      # velocity tolerance is imposed after this time
 
 #Initial Condition
-qinit_style = 3         # topotype style initial conditions
+qinit_style = -3         # topotype style initial conditions
 use_var_tau_y = False    # Setup the varialbe yield strength?
 fname_tau_y = 'dummy.tt3'          # File for the variable
 

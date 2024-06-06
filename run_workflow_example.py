@@ -45,7 +45,7 @@ do_run_interface_module = True                  # Run Interface Module (True/Fal
 donor = 'bingclaw'
 bathy_file = 'MessinaGEBCO_forHySEA_HR.nc'      # ***Bathymetry file for interface module (where results of BingClaw are interpolated on)
 resolution = 100                                # ***Resolution (m)
-filter_type = 'none'                            # ***Filter for deformation data (kajiura / none)
+filter_type = 'kajiura'                            # ***Filter for deformation data (kajiura / none)
 filename_prefix = 'filter' + filter_type + '_res' + str(resolution) # Prefix used by Interface Module to name output files
 casename = os.path.join(intmod_output_dir, filename_prefix)         # Add path of directory where output is saved to prefix string
 
@@ -54,6 +54,8 @@ do_run_hysea = True                 # Run T-HySEA (True/False)
 hysea_input_dir = os.path.join(input_dir, 'hysea_inputs')     # Directory with HySEA useful files
 hysea_executable = '/home/vmg/T-HySEA_4.0.0_MC/build/TsunamiHySEA'  # ***Full path of location of T-HySEA executable
 casename_from_intmod = filename_prefix
+output_time_series = True           # ***Output time series. If true, template hysea_input.template is used; if False, hysea_input_ts.template
+pois_file = 'Messina_pois.dat'      # ***Name of file with list of POIs for storing time series (relevant if output_time_series is True)
 
 # ============  RUN WORKFLOW  ============ 
 print(f"\n* Running workflow bingclaw-to-hysea for scenario '{scenario}' with filter '{filter_type}' and resolution {resolution} m")
@@ -78,7 +80,7 @@ else:
 
 # Run T-HySEA
 if (do_run_hysea):
-    run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, scenario, casename_from_intmod)
+    run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, output_time_series, pois_file, scenario, casename_from_intmod)
 else:
     print('Skip running T-HySEA simulation because do_run_hysea is set to False')
 

@@ -54,6 +54,8 @@ do_run_hysea = True                     # Run T-HySEA (True/False)
 hysea_input_dir = os.path.join(input_dir, 'hysea_inputs')   # Directory with HySEA useful files
 hysea_executable = '/FULL_PATH_TO/T-HySEA_executable'       # ***Full path of location of T-HySEA executable
 casename_from_intmod = filename_prefix
+output_time_series = True           # ***Output time series. If true, template hysea_input.template is used; if False, hysea_input_ts.template
+pois_file = 'filename'              # ***Name of file with list of POIs for storing time series (relevant if output_time_series is True)
 
 # ============  RUN WORKFLOW  ============ 
 print(f"\n* Running workflow bingclaw-to-hysea for scenario '{scenario}' with filter '{filter_type}' and resolution {resolution} m")
@@ -78,7 +80,7 @@ else:
 
 # Run T-HySEA
 if (do_run_hysea):
-    run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, scenario, casename_from_intmod)
+    run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, output_time_series, pois_file, scenario, casename_from_intmod)
 else:
     print('Skip running T-HySEA simulation because do_run_hysea is set to False')
 
