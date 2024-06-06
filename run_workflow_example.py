@@ -16,6 +16,7 @@ import sys
 from py.run_interface_module import run_interface_module
 from py.run_bingclaw import run_bingclaw
 from py.run_hysea import run_hysea
+from py.remove_first_timestep import remove_first_timestep
 
 # ============  INPUT PARAMETERS  ============
 # Set folder and file names
@@ -75,6 +76,7 @@ else:
 # Run interface module
 if (do_run_interface_module):
     run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir, donor, bathy_file, resolution, filter_type, casename)
+    remove_first_timestep(intmod_output_dir, casename_from_intmod)
 else:
     print('Skip running Interface Module because do_run_interface_module is set to False')
 
