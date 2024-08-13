@@ -28,8 +28,9 @@ The workflow needs the following input files:
  ```
 
 ### *Set up the environment and check the requirements*
-2. Set up the python environment. If you use Poetry, you can simply type `poetry install` inside the repo directory to install the necessary python packages. Alternatively, check the list of python packages in the requirements below and install them.
-3. Check the rest of the requirements below. This workflow includes running codes that have a lot of requirements. It uses Docker or Singularity to run BingClaw, which makes it possible to run it on any PC or clsuter. However, Tsunami-HySEA uses CUDA-capable GPUs, which means that an image of HySEA would need to be specific for the cluster you are using. Therefore, at the moment, this workflow assumes T-HySEA is installed on the cluster you are using.   
+2. Set up the python environment. If you use Poetry, you can simply type `poetry install` inside the repo directory to install the necessary python packages. If the version of poetry you use is <1.8, before running `poetry install`, you either need to comment the line "package-mode = false" in pyproject.toml or update poetry with the command `poetry self update`.    
+Alternatively, check the list of python packages in the requirements below and install them.
+3. Check the rest of the requirements below. This workflow includes running codes that have a lot of requirements. It uses Docker or Singularity to run BingClaw, which makes it possible to run it on any PC or cluster. However, Tsunami-HySEA uses CUDA-capable GPUs, which means that an image of HySEA would need to be specific for the cluster you are using. Therefore, at the moment, this workflow assumes T-HySEA is installed on the cluster you are using.   
 
 ### *Prepare files* 
 4. Make sure you have all the input files needed. Change parameters in the bingclaw and hysea template files, if needed. Note that the workflow will take care of inserting the right file names, so you do not need to change that now. However, if there is any other parameter (e.g., simulation time, friction values, ...) that you want to change, do so in the template.

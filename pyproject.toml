@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["valemagni <valentina.magni@ngi.no>"]
 readme = "README.md"
-packages = [{include = "bingclaw_to_hysea"}]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
