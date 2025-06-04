@@ -52,7 +52,7 @@ def set_first_timestep_to_zero(intmod_output_dir, casename_from_intmod):
     # Overwrite input file.
     command = "cp tempfile " + deformation 
     os.system(command)
-    print(f"* File {deformation} has been overwritten; first timestep output has been set to zero)
+    print(f"* File {deformation} has been overwritten; first timestep output has been set to zero")
 
 if __name__ == '__main__':
     set_first_timestep_to_zero()

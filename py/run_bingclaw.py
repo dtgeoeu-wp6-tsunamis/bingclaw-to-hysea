@@ -71,7 +71,8 @@ def run_bingclaw(input_dir, output_dir, bathymetry, scenario, box, resolution, i
     filereplace(setrun_file, 'Y_CELLS', str(int(y_cells)))
 
     # Copy required files in output scenario folder
-    input_file = os.path.join(input_dir, scenario)
+    #input_file = os.path.join(input_dir, scenario)
+    input_file = scenario
     cp = shutil.copy(input_file, os.path.join(output_dir, scenario))
     cp = shutil.copy(os.path.join(input_dir, bathymetry), os.path.join(output_dir, bathymetry))
 
