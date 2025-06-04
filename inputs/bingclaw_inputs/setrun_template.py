@@ -27,7 +27,7 @@ hydrodrag = True      # Use hydrodrag force?
 cF_hyd = 0.001
 cP_hyd = 0.25 
 remolding = True     # remolding? if not, only tauy_i is used
-tauy_i = 10000.0       # initial yield strength (Pa)
+tauy_i = 5000.0       # initial yield strength (Pa)
 tauy_r = 2000.0       # residual yield strength (Pa)
 remold_coeff = 1e-1  # remolding parameter
 
@@ -66,6 +66,7 @@ def setrun(claw_pkg='geoclaw'):
 
     num_dim = 2
     rundata = data.ClawRunData(claw_pkg, num_dim)
+    rundata.topo_data.topo_missing = -9999
 
     #------------------------------------------------------------------
     # Problem-specific parameters to be written to setprob.data:
@@ -87,7 +88,7 @@ def setrun(claw_pkg='geoclaw'):
     probdata.add_param('vel_tol'     ,  vel_tol     ,'Velocity tolerance for stopping')
     probdata.add_param('t_vel_tol'   ,  t_vel_tol   ,'Time to apply velocity tolerance')
     probdata.add_param('use_var_tau_y',use_var_tau_y,'Use variablt tau_y?')
-    probdata.add_param('fname_tau_y' ,  '../'+fname_tau_y   ,'File name for variable tau_y')
+    #probdata.add_param('fname_tau_y' ,  '../'+fname_tau_y   ,'File name for variable tau_y')
 
     #------------------------------------------------------------------
     # Problem-specific parameters to be written to setprob.data:
@@ -121,16 +122,20 @@ def setrun(claw_pkg='geoclaw'):
     #clawdata.upper[0] = 299400
     #clawdata.lower[1] = 6667000 
     #clawdata.upper[1] = 6668500
-    clawdata.lower[0] = 15.4
-    clawdata.upper[0] = 15.7
-    clawdata.lower[1] = 37.8 
-    clawdata.upper[1] = 38.2
+    clawdata.lower[0] = LONMIN
+    clawdata.upper[0] = LONMAX
+    clawdata.lower[1] = LATMIN
+    clawdata.upper[1] = LATMAX
+    #clawdata.lower[0] = 15.38
+    #clawdata.upper[0] = 15.48
+    #clawdata.lower[1] = 37.92 
+    #clawdata.upper[1] = 37.97
 
     # Number of grid cells: Coarsest grid
     # clawdata.num_cells[0] = 560
     # clawdata.num_cells[1] = 600
-    clawdata.num_cells[0] = 300
-    clawdata.num_cells[1] = 400
+    clawdata.num_cells[0] = X_CELLS
+    clawdata.num_cells[1] = Y_CELLS  #res 20: 1111; res 40:556
 
     # ---------------
     # Size of system:

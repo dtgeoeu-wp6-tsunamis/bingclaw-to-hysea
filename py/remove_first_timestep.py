@@ -50,7 +50,7 @@ def remove_first_timestep(intmod_output_dir, casename_from_intmod):
                     outVar[:] = varin[:]
                 
     # Overwrite input file.
-    command = "mv tmpfile " + deformation 
+    command = "mv tempfile " + deformation 
     os.system(command)
     print(f"* File {deformation} has been overwritten; first timestep output has been removed")
 

@@ -63,7 +63,7 @@ If you are using Singularity, you can pull the same image, but using a command t
 singularity pull --docker-login docker://ghcr.io/dtgeoeu-wp6-tsunamis/bingclaw:latest
 ```
 ### *Requirements for running Tsunami-HySEA*
-Tsunami-HySEA needs to run on system with CUDA-capable GPUs, needs openMPI and NetCDF. The CINECA cluster Leonardo can be used, as well as any other cluster with T-HySEA is already installed (e.g., Mare Nostrum, Power9, Mercalli, David@NGI, ...). On Leonardo, a compiled version of T-HySEA is available for DTGEO-WP6 memebers and istructions on how to set up the environment and how to use it can be found [here](https://dtgeoeu-wp6-tsunamis.github.io/dt-geo-wp6-docs/Tsunami-HySEA/leonardo/).
+Tsunami-HySEA needs to run on system with CUDA-capable GPUs, needs openMPI and NetCDF. The CINECA cluster Leonardo can be used, as well as any other cluster with T-HySEA is already installed (e.g., Mare Nostrum, Power9, Mercalli, David@NGI, ...). On Leonardo, a compiled version of T-HySEA is available for DTGEO-WP6 members and instructions on how to set up the environment and how to use it can be found [here](https://dtgeoeu-wp6-tsunamis.github.io/dt-geo-wp6-docs/Tsunami-HySEA/leonardo/).
 
 ## Structure of repository
 The structure of this repo and of the Input/Output directories is:
