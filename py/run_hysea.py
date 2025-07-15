@@ -15,7 +15,7 @@ Created by V. Magni (NGI)
 import os 
 import sys
 import shutil
-from pyutil import filereplace
+from py.utils import filereplace
 
 # TODO: WORK IN PROGRESS
 def run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, output_time_series, pois_file, scenario, casename_from_intmod):
@@ -57,5 +57,5 @@ def run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_execut
         filereplace(hysea_input_file, 'POIS_FILE', pois_file_full)
     
     # Run T-HySEA simulation
-    command = f"echo {hysea_input_file} > 'simulations.txt'; mpirun -np 1 {hysea_executable} 'simulations.txt'"
+    command = f"echo {hysea_input_file} > 'simulations.txt'; mpirun -mca orte_tmpdir_base /home/marboeuf/L-HySEA/mpitmp/ -np 1 {hysea_executable} 'simulations.txt'"
     os.system(command)

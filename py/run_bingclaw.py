@@ -14,7 +14,7 @@ Created by V. Magni (NGI)
 import os 
 import sys
 import shutil
-from pyutil import filereplace
+from py.utils import filereplace
 
 def run_bingclaw(input_dir, output_dir, bathymetry, scenario, image_type, image_name):
     print(f"* Executing run_bingclaw")
