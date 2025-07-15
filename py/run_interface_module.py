@@ -17,7 +17,7 @@ import os
 import sys
 
 
-def run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir, donor, bathy_file, resolution, filter_type, casename):
+def run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir, donor, donor_proj, bathy_file, resolution, filter_type, casename):
     print("* Executing run_interface_module")
     
     # Check that BingClaw output directory exists
@@ -33,8 +33,8 @@ def run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir
     bathymetry = os.path.join(hysea_input_dir, bathy_file)
     
     # Run Interface Module
-    tolaunch = os.path.join(os.getcwd(),'Interface-module','interface_module.py')
+    tolaunch = os.path.join(os.getcwd(),'Interface-module-local','interface_module.py')
     command = f"python {tolaunch} --donor {donor} {bingclaw_output_dir} {bathymetry} \
-                --resolution {resolution} --filter {filter_type} --casename {casename}"
+                --resolution {resolution} --projection {donor_proj} --filter {filter_type} --casename {casename}"
     os.system(command)
 

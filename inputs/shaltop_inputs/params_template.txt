@@ -1,0 +1,15 @@
+tmax FINALTIME
+nbim NBIM
+nx NX
+ny NY
+pery YMAX
+per XMAX
+icomp 1
+delta1 7
+diam 1.0
+I0 0.279
+folder_output OUTPUT
+hinit_vert 1
+file_m_init SCENARIO
+file_z_init BATHYMETRY
+imformat 1
