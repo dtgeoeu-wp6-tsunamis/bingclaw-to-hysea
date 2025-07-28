@@ -25,7 +25,7 @@ from py.remove_first_timestep import remove_first_timestep
 # Parameters marked with *** in the comment are the bare minimum for the 
 # user to check and change
 # WARNING: absolute paths for input_dir and output_dir are preferred to avoid errors 
-scenario   = 'mscen_v0.141_x0_15.471_y0_38.004'   # ***Simulation name
+scenario   = 'volume_id-6654397_seed-12185-14139_big_cut'   # ***Simulation name
 input_dir  = '/home/marboeuf/shalbing-to-hysea/inputs'        # Parent directory with input files for BingClaw and T-HySEA
 output_dir = '/home/marboeuf/shalbing-to-hysea/outputs'       # Parent directory where scenario output folder will be created
 
@@ -48,36 +48,40 @@ image_name = 'bingclaw_latest.sif'      # ***Name of BingClaw docker image     #
 
 # For Shaltop
 #       For now I only change the name of the files from the template, but for sure other parameters need to be changed too
-do_run_shaltop = True                # Run Shaltop simulation (True/False)
+do_run_shaltop = False            # Run Shaltop simulation (True/False)
 shaltop_executable = os.environ['SHALTOP_DIR']+'/code/shaltop.out'
 shaltop_input_dir = os.path.join(input_dir, 'shaltop_inputs')     # Directory with Shaltop input files
-shaltop_bathymetry = 'localMessinaBathy.d'  # ***Bathymetry file used in Shaltop simulations
+shaltop_bathymetry = 'GEBCO2024_100m_15_1650_36_3840_cut.d'  # ***Bathymetry file used in Shaltop simulations
+#shaltop_bathymetry = 'localMessinaBathy.d'  # ***Bathymetry file used in Shaltop simulations
 # The projection parameter is different given the local coordinates (m) implemented by Shaltop.
 # - Paramters nx,ny,xmax,xmin,ymin,ymax are the grid information used for the Shaltop simulation. xmax,xmin,ymax,ymin are local coordinates (m) given in localCRS. xmin = ymin = 0 in Shaltop.
 # - For a conversion to geographic coordinates (lat, lon), we need the bounds of the box in the given localCRS
 # The projection parameter for Shaltop is a string (the interface module needs a string) containing the list of Shaltop info
-shaltop_proj = "[1440,1200,epsg:6875,7281818.945820,4172754.107359,7334374.0586318625,4228419.493997064]" # [nx,ny,localCRS,xmin,ymin,xmax,ymax]
-shaltop_time = [300,100] # Final time (s) and output frequency for Shaltop: [tmax,nbOutput]
+#shaltop_proj = "[1500,2400,epsg:6875,7270167.11342248,3983780.09090911,7392551.902256392,4255050.0455952445]" # Bathy big domain [nx,ny,localCRS,xmin,ymin,xmax,ymax]
+shaltop_proj = "[431,224,epsg:6875,7288903.801247878,4200696.299765889,7325749.817595551,4226961.3767115185]" # Smaller domain for Shaltop [nx,ny,localCRS,xmin,ymin,xmax,ymax]
+#shaltop_proj = "[879,1106,epsg:6875,7265864.585849341,4128156.0782327116,7354014.839333433,4238520.225805123]" # Bathy old domain [nx,ny,localCRS,xmin,ymin,xmax,ymax]
+shaltop_time = [200.0,50] # Final time (s) and output frequency for Shaltop: [tmax,nbOutput]
 shaltop_scenario = scenario + '.d'   # ***Name of .d file describing initial conditions for Shaltop simulation
 image_type = 'none'             # ***Type of image (docker/none). If none shaltop_executable is used
 image_name = 'image_name'              # ***Name of Shaltop docker image (relavant only if image_type = 'docker')
 
 # For Interface Module 
-do_run_interface_module = True               # Run Interface Module (True/False)
+do_run_interface_module = True             # Run Interface Module (True/False)
 donor = 'shaltop'
-bathy_file = 'MessinaGEBCO_forHySEA_HR.nc'      # ***Bathymetry file for interface module (where results of BingClaw are interpolated on)
+bathy_file = 'GEBCO2024_100m_15_1650_36_3840.nc'      # ***Bathymetry file for interface module (where results of BingClaw are interpolated on)
+#bathy_file = 'localMessinaBathy_latlon.nc'      # ***Bathymetry file for interface module (where results of BingClaw are interpolated on)
 resolution = 100                                # ***Resolution (m)
 filter_type = 'kajiura'                            # ***Filter for deformation data (kajiura / none)
 filename_prefix = 'filter' + filter_type + '_res' + str(resolution) # Prefix used by Interface Module to name output files
 casename = os.path.join(intmod_output_dir, filename_prefix)         # Add path of directory where output is saved to prefix string
 
 # For T-HySEA 
-do_run_hysea = True               # Run T-HySEA (True/False)
+do_run_hysea = False               # Run T-HySEA (True/False)
 hysea_input_dir = os.path.join(input_dir, 'hysea_inputs')     # Directory with HySEA useful files
 hysea_executable = os.environ['THYSEA_DIR']+'/bin/TsunamiHySEA'  # ***Full path of location of T-HySEA executable
 casename_from_intmod = filename_prefix
 output_time_series = True           # ***Output time series. If true, template hysea_input.template is used; if False, hysea_input_ts.template
-pois_file = 'Messina_pois.dat'      # ***Name of file with list of POIs for storing time series (relevant if output_time_series is True)
+pois_file = 'messina_tms_HySEA.txt'      # ***Name of file with list of POIs for storing time series (relevant if output_time_series is True)
 
 # ============  RUN WORKFLOW  ============ 
 print(f"\n* Running workflow bingclaw-to-hysea for scenario '{scenario}' with filter '{filter_type}' and resolution {resolution} m")
@@ -103,8 +107,7 @@ if (do_run_shaltop):
     donor_proj = shaltop_proj
 else:
     print('Skip running Shaltop simulation because do_run_shaltop is set to False')
-donor_output_dir = shaltop_output_dir
-donor_proj = shaltop_proj
+
 # Run interface module
 if (do_run_interface_module):
     run_interface_module(donor_output_dir, intmod_output_dir, hysea_input_dir, donor, donor_proj, bathy_file, resolution, filter_type, casename)
