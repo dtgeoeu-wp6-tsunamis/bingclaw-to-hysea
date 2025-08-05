@@ -12,10 +12,10 @@ HYSEA_OUTNAME        # NetCDF file prefix
 1                    # Left border condition
 1                    # Right border condition
 1801.0               # Simulation time (sec) 8h:28800
-30.0                 # Saving time of NetCDF files (sec) (-1: do not save)
+60.0                 # Saving time of NetCDF files (sec) (-1: do not save)
 1                    # Read points from file (0: no, 1: yes). Used for time series
 POIS_FILE            # File with point locations for time series
-10                   # Saving time of time series (sec)
+5                   # Saving time of time series (sec)
 0.5                  # CFL
 5e-3                 # Epsilon h (m)
 20                   # Threshold for the 2s+WAF scheme (m)

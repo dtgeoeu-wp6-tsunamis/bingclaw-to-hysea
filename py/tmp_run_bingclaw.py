@@ -36,7 +36,7 @@ def haversine(lon1, lat1, lon2, lat2):
     distance_m = 6371* c * 1000
     return distance_m
 
-def run_bingclaw(input_dir, release_volume_dir, output_dir, bathymetry, scenario, box, resolution, image_type, image_name):
+def tmp_run_bingclaw(input_dir, release_volume_dir, output_dir, bathymetry, scenario, box, resolution, image_type, image_name):
     print(f"* Executing run_bingclaw")
     
     # Create BingClaw output directory inside the scenario output directory
@@ -74,7 +74,7 @@ def run_bingclaw(input_dir, release_volume_dir, output_dir, bathymetry, scenario
     input_file = os.path.join(release_volume_dir, scenario)
     cp = shutil.copy(input_file, os.path.join(output_dir, scenario))
     cp = shutil.copy(os.path.join(input_dir, bathymetry), os.path.join(output_dir, bathymetry))
-
+    """
     # Run bingclaw simulation
     tomount = os.path.join(os.getcwd(),output_dir)
     if image_type == 'docker':
@@ -85,5 +85,5 @@ def run_bingclaw(input_dir, release_volume_dir, output_dir, bathymetry, scenario
         os.system(command)
     else:
         print(f"{image_type} is not a valid image_type. Options are 'docker' or 'singularity'")
-
+    """
 

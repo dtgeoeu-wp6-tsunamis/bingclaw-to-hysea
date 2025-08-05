@@ -21,13 +21,13 @@ def set_first_timestep_to_zero(intmod_output_dir, casename_from_intmod):
     dir_list = os.listdir(intmod_output_dir)
     deform = [x for x in dir_list if ('deformation' in x and casename_from_intmod in x)][0]
     deformation = os.path.join(intmod_output_dir, deform)
-    deformation = "outputs/test_set_first_zero.nc"
     print(f"Input filename: {deformation}.")
     donor = 'bingclaw'
-    
+    temp_file_name = os.path.join(intmod_output_dir,'tempfile')
+
     # Open files for reading and writing
     with Dataset(filename=deformation, mode='r', format='NETCDF4') as dsin:
-        with Dataset(filename='tempfile', mode='w', format='NETCDF4') as dsout:
+        with Dataset(filename=temp_file_name, mode='w', format='NETCDF4') as dsout:
             dsout.title =  dsin.title
             today = datetime.today()
             dsout.history = f"{dsin.history}. Set first timestep values of deformation to zero {today.strftime('%d/%m/%y')}."
@@ -50,7 +50,7 @@ def set_first_timestep_to_zero(intmod_output_dir, casename_from_intmod):
                     outVar[:] = varin[:]
                 
     # Overwrite input file.
-    command = "cp tempfile " + deformation 
+    command = "mv " + temp_file_name + " " + deformation 
     os.system(command)
     print(f"* File {deformation} has been overwritten; first timestep output has been set to zero")
 

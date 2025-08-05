@@ -19,6 +19,7 @@ vtk = "^9.3.0"
 pyvista = "^0.43.3"
 pyproj = "^3.6.1"
 python-util = "^1.2.1"
+pandas = "^2.3.0"
 
 [build-system]
 requires = ["poetry-core"]

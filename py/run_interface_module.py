@@ -15,9 +15,9 @@ Created by V. Magni (NGI)
 """
 import os 
 import sys
+from py.set_first_timestep_to_zero import set_first_timestep_to_zero
 
-
-def run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir, donor, bathy_file, resolution, filter_type, casename):
+def run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir, donor, bathy_file, resolution, filter_type, casename, casename_from_intmod):
     print("* Executing run_interface_module")
     
     # Check that BingClaw output directory exists
@@ -34,7 +34,14 @@ def run_interface_module(bingclaw_output_dir, intmod_output_dir, hysea_input_dir
     
     # Run Interface Module
     tolaunch = os.path.join(os.getcwd(),'Interface-module','interface_module.py')
-    command = f"python {tolaunch} --donor {donor} {bingclaw_output_dir} {bathymetry} \
-                --resolution {resolution} --filter {filter_type} --casename {casename}"
-    os.system(command)
+    if resolution:
+         command = f"python {tolaunch} --donor {donor} {bingclaw_output_dir} {bathymetry} \
+                     --resolution {resolution} --filter {filter_type} --casename {casename}"
+    else:
+         command = f"python {tolaunch} --donor {donor} {bingclaw_output_dir} {bathymetry} \
+                     --filter {filter_type} --casename {casename}"
 
+
+    os.system(command)
+    
+    set_first_timestep_to_zero(intmod_output_dir, casename_from_intmod)
