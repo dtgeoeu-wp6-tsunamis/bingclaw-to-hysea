@@ -6,6 +6,8 @@ Input needed:
  - hysea_output_dir     # Name of directory where T-HySEA outputs will be saved 
  - intmod_output_dir    # Interface Module output directory
  - hysea_executable     # Full path of location of T-HySEA executable
+ - output_time_series   # Output time series True/False
+ - pois_file            # File with POIs coordinates
  - scenario             # Simulation name
  - casename_from_intmod # Casename used in Interface Module to identify filter and resolution used for a specific scenario
 
@@ -17,7 +19,6 @@ import sys
 import shutil
 from pyutil import filereplace
 
-# TODO: WORK IN PROGRESS
 def run_hysea(hysea_input_dir, hysea_output_dir, intmod_output_dir, hysea_executable, output_time_series, pois_file, scenario, casename_from_intmod):
     print("* Executing run_hysea")
 

@@ -10,6 +10,7 @@ Input needed:
  - resolution            # Flag for interface module: Resolution (m)
  - filter_type           # Flag for interface module: Filter for deformation data (kajiura / none)
  - casename              # Flag for interface module: String used to name output files from Interface Module (including directory where files are saved)
+ - casename_from_intmod  # Casename used in Interface Module to identify filter and resolution used for a specific scenario
 
 Created by V. Magni (NGI)
 """

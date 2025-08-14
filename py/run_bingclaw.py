@@ -2,14 +2,15 @@
 Script to launch a bingclaw simulation 
 
 Input needed:
- - bingclaw_input_dir       Name of directory with BingClaw input files
- - bingclaw_output_dir      Name of directory where BingClaw outputs will be saved
- - bathymetry               Bathymetry file used in BingClaw simulations
- - scenario                 Simulation name (same name as the .tt3 files describing initial conditions)
- - box                      [Lon min, Lon max, Lat min, Lat max] Geographic coordinates of computational domain
- - resolution               Grid resolution in m
- - image_type               Type of image: 'docker' or 'singularity'
- - image_name               Name of BingClaw docker image or singularity .sif file
+ - input_dir             Name of directory with BingClaw input files
+ - release_volume_dir    Name of directory where release volume raster files are
+ - output_dir            Name of directory where BingClaw outputs will be saved
+ - bathymetry            Bathymetry file used in BingClaw simulations
+ - scenario              Simulation name (scenario id)
+ - box                   [Lon min, Lon max, Lat min, Lat max] Geographic coordinates of computational domain
+ - resolution            Grid resolution in m
+ - image_type            Type of image: 'docker' or 'singularity'
+ - image_name            Name of BingClaw docker image or singularity .sif file
 
 Created by V. Magni (NGI)
 """

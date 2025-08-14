@@ -1,10 +1,10 @@
 # Workflow from Bingclaw to T-HySEA
-**WORK IN PROGRESS**
 
-Mini worflow that goes from running a landslide simulation with the code [BingClaw](https://github.com/norwegian-geotechnical-institute/BingCLAW_5.6.1) to running a tsunami simulation with the code [Tsunami-HySEA](https://github.com/edanya-uma/Tsunami-HySEA).   
+Mini workflow that goes from running a landslide simulation with the code [BingClaw](https://github.com/norwegian-geotechnical-institute/BingCLAW_5.6.1) to running a tsunami simulation with the code [Tsunami-HySEA](https://github.com/edanya-uma/Tsunami-HySEA).   
 This workflow uses the [Interface Module](https://github.com/dtgeoeu-wp6-tsunamis/Interface-module) to convert the output of BingClaw to inputs readable by T-HySEA: it interpolates the ground deformation coming from the landslide model to a new bathymetry that is used in the tsunami simulation, and, optionally, it applies the Kajiura filter to the ground deformation.
 
 The workflow follows the steps:
+ - read list of release volumes to run simulations for
  - set up parameters, paths, flags to run the different modules
  - run BingClaw simulation
  - run interface module 
@@ -12,13 +12,16 @@ The workflow follows the steps:
  - run T-HySEA simulation
    
 The workflow needs the following input files:
+ - A list of release volumes to run (e.g., inputs/volume_representatives.csv)
  - For BingClaw: a bathymetry file (e.g., inputs/bingclaw_inputs/localMessinaBathy.tt3)   
- - For BingClaw: an initialisation file (e.g., inputs/bingclaw_inputs/mscen*.tt3)
+ - For BingClaw: a release volume file (e.g., inputs/bingclaw_inputs/mscen*.tt3)
  - For BingClaw: A configuration file for setting up relevant parameters  (this file is created by the workflow using the template inputs/bingclaw_inputs/setrun_template.py)   
  - For BingClaw (only for singularity): a .sh script with commands to run inside the container (run_simulations.sh)
  - For T-HySEA: a bathymetry file (e.g., inputs/hysea/MessinaGEBCO_forHySEA_HR.nc). The spatial domain of this bathymetry needs to be larger than that used in the BingClaw simulation.   
- - For T-HySEA: a parameter file (this file is created by the workflow using the template inputs/hysea_inputs/hysea_input.template) 
+ - For T-HySEA: a parameter file (this file is created by the workflow using the template inputs/hysea_inputs/hysea_input.template or inputs/hysea_inputs/hysea_input_ts.template if time series need to be stored) 
+ - For T-HySEA (only if choosing to save time series): a file with POIs coordinates (e.g., inputs/hysea_inputs/messina_tms_HySEA.txt)   
     
+In the branch shaltop-to-hysea a similar workflow is created to use SHALTOP instead of BingClaw for the landslides dynamics simulations.
    
 ## Instructions   
  1. Clone this repo and load the submodule Interface-module
@@ -38,10 +41,13 @@ Alternatively, check the list of python packages in the requirements below and i
 
 ### *Run the workflow*
 6. Run the workflow with the following command
+
 ```
-python run_workflow.py
+python read_volumes_create_runscripts.py
 ```   
-At the end of the run, you should have an output directory with the name of the scenario and with subdirectories where the output of BingClaw, Interface Module, and T-HySEA are stored. You can see the structure of the repo and of the input/output files below.
+If you want to run only one scenario, you can modify the read_volumes_create_runscripts.py script to pick only one scenario from the list or directly specify the input parameters of the my_run_workflow_func function.
+
+At the end of the run, you should have an output directory with the name of the scenario and with subdirectories where the output of BingClaw, Interface Module, and T-HySEA are stored. You can see the structure of the output directory below.
 
 ## Requirements
 ### *Python packages*   
@@ -66,7 +72,7 @@ singularity pull --docker-login docker://ghcr.io/dtgeoeu-wp6-tsunamis/bingclaw:l
 Tsunami-HySEA needs to run on system with CUDA-capable GPUs, needs openMPI and NetCDF. The CINECA cluster Leonardo can be used, as well as any other cluster with T-HySEA is already installed (e.g., Mare Nostrum, Power9, Mercalli, David@NGI, ...). On Leonardo, a compiled version of T-HySEA is available for DTGEO-WP6 members and instructions on how to set up the environment and how to use it can be found [here](https://dtgeoeu-wp6-tsunamis.github.io/dt-geo-wp6-docs/Tsunami-HySEA/leonardo/).
 
 ## Structure of repository
-The structure of this repo and of the Input/Output directories is:
+The structure of the Input folder is:
 ```
  bingclaw-to-hysea
  | - inputs
@@ -79,28 +85,26 @@ The structure of this repo and of the Input/Output directories is:
  |   | - hysea_inputs
  |   |   | - bathymetry
  |   |   | - hysea_input.template
- | - outputs
- |   | - scenario1 (will be created at run time)
- |   |   | - bingclaw_out
- |   |   |   | - bingclaw output files
- |   |   | - intmod_out
- |   |   |   | - interface module output files
- |   |   | - hysea_out
- |   |   |   | - bingclaw output files
- |   | - scenario2 (will be created at run time)
- |   |   | - bingclaw_out
- |   |   |   | - bingclaw output files
- |   |   | - intmod_out
- |   |   |   | - interface module output files
- |   |   | - hysea_out
- |   |   |   | - bingclaw output files
- |   | - ...
- | - py
- |   | - run_bingclaw.py
- |   | - run_interface_module.py
- |   | - run_hysea.py
- | - run_workflow.py
- | - pyproject.toml
- | - run_simulation.sh (needed only for running BingClaw with Singularity)
+ |   | - list_of_volumes.csv (this file can be anywhere)
+ ```
+
+The structure of the Ouput folder is:
+ ```
+ outputs
+ | - scenario1 (will be created at run time)
+ |   | - bingclaw_out
+ |   |   | - bingclaw output files
+ |   | - intmod_out
+ |   |   | - interface module output files
+ |   | - hysea_out
+ |   |   | - hysea output files
+ | - scenario2 (will be created at run time)
+ |   | - bingclaw_out
+ |   |   | - bingclaw output files
+ |   | - intmod_out
+ |   |   | - interface module output files
+ |   | - hysea_out
+ |   |   | - hysea output files
+ | - ...
  ```
 
