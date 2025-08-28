@@ -37,7 +37,7 @@ Alternatively, check the list of python packages in the requirements below and i
 
 ### *Prepare files* 
 4. Make sure you have all the input files needed. Change parameters in the bingclaw and hysea template files, if needed. Note that the workflow will take care of inserting the right file names, so you do not need to change that now. However, if there is any other parameter (e.g., simulation time, friction values, ...) that you want to change, do so in the template.
-5. Open the file `read_volumes_create_runscripts.py` and set the right names and paths of input and output folders and files.
+5. Open the file `read_volumes_create_runscripts.py` to set the right names and paths of input and output folders, and the file `my_run_workflow_func.py` to set the right parameters for each module.
 
 ### *Run the workflow*
 6. Run the workflow with the following command
